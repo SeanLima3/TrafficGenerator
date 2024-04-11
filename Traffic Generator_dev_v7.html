@@ -1,0 +1,1322 @@
+  <style>
+  
+  #hiddenContent {
+      display: none;
+      white-space: pre-line; /* Preserve newline characters */
+    }
+
+
+  h3 {
+    color: #333;
+  }
+
+  form {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #bbb;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+
+  input[type="text"],
+  select,
+  button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+	
+	#crmDropdownContainer,
+	#crmDropdownContainer2,
+    #CMRconfigcontainer,
+    #CMRconfigcontainer2	{
+      display: none; /* Initially hide the container */
+	   /*margin-left: 10px;
+	   margin-bottom: 10px;
+	   align-items: center;
+    }
+	#crmLabel,
+	#crmLabel2,
+	#callerID2,
+	#callerID,
+	#email,
+	#email2,
+	#phoneSearch,
+	#emailSearch {
+		/* Add your additional styling as needed */
+		display: none; /* Initially hide the label */
+	}
+    
+	.hidden {
+      display: none;
+    }
+	
+.button-container button {
+  display: inline-block;
+  margin: 1 5px; /* Adjust the margin as needed */
+  background-color: #007bff;
+  color: #fff;
+  border: 2px;
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+    padding: 4px 4px; /* Adjust padding for height and width */
+  font-size: 14px; /* Adjust font size */
+}
+
+  button:hover {
+    background-color: #0056b3;
+  }	
+	.hide-label {
+    display: none; /* Initially hide the label */
+  }
+    #clickHereLink {
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+	color: #007bff;
+  }
+
+  </style>
+
+<form id="myForm" onsubmit="return onSubmitForm(event)">
+<p id="agentIDDisplay"></p><div class="button-container">
+<button id="clearLocalStorage" onclick="clearStorage()" type="button">Clear AgentID</button>
+</div>
+<br>
+<hr>
+<center><h3>Phone</h3></center>
+
+  <!-- <label for="agentID">Agent ID:</label> -->
+  <!-- <input id="agentID" name="agentID" type="text" /> -->
+  <!-- <br><br> -->
+  <label for="phoneNumber">Phone Number:</label>
+  <input id="phoneNumber" name="phoneNumber" type="text" />
+  <br />
+  <font size='2'>(for click to call)</font>
+  <br /><br>
+  <div>
+    <input type="checkbox" id="embeddedCrmAgent2" onchange="toggleDropdownVisibility2()">
+    <label for="embeddedCrmAgent2">CRM Agent <font size="2">(also applies to Chat channel)</font></label>
+  </div>
+  <div id="crmDropdownContainer2">
+    <label for="crmDropdown2" id="crmLabel2"></label>
+    <select id="crmDropdown2" name="crmDropdown2">
+      <option value="dynamics">Microsoft Dynamics</option>
+	  <option value="oracle">Oracle</option>
+      <option value="salesforce">Salesforce</option>
+      <option value="servicenow">ServiceNow</option>
+      <option value="zendesk">Zendesk</option>
+    </select>
+  </div>
+  <br><br>
+<div id="CMRconfigcontainer"><b><label for="CRMconfig" id="CRMconfig" class="hidden">CRM Screenpop config:</b></label>
+<label for="callerID2">Caller ID:</label> <input id="callerID2" name="callerID2" type="text" class="hidden"/>
+<label for="email">Email Address:</label> <input id="email" name="email" type="text" class="hidden"/><br />
+  Search by:
+  <label>
+    <input type="radio" name="searchMethod" value="phone" checked>
+    Phone Number
+  </label>
+  
+  <label>
+    <input type="radio" name="searchMethod" value="email" >
+    Email
+  </label>	
+ <br><br>
+ </div>
+  <div>
+    <input type="checkbox" id="customizeCallCheckbox" onchange="toggleCustomFields()">
+    <label for="customizeCallCheckbox">Customize Call</label>
+  </div>
+<br><br>
+  <div id="customFields" class="hidden">
+<label for="phoneScript">Custom Phone Script:</label> <input id="phoneScript" name="phoneScript" type="text" value=""/><br />
+<font size='2'>Format: Folder\ScriptName</font>
+<br /><br>
+<label for="customSkill">Custom Skill:</label> <input id="customSkill" name="customSkill" type="text" value=""/><br />
+<font size='2'>For Queueing</font>
+<br /><br>
+<label for="customerName">Customer Name:</label> <input id="customerName" name="customerName" type="text" value=""/><br />
+<font size='2'>(for Customer Card)</font>
+<br><br>
+<b>Agent Assist:</b>
+<br>
+<label style="display: flex; align-items: center;">
+    <input type="checkbox" name="AAoptions1" value="RTIG" onclick="toggleCustomRTIGField1()"> RTIG App
+    <div id="CustomAARTIGField1" style="display: none; margin-left: 10px;">
+        <input type="text" id="customRTIG1" name="customRTIG1" value="Default_RTIG" />
+    </div>
+</label>
+<label style="display: flex; align-items: center;">
+    <input type="checkbox" name="AAoptions1" value="Custom" onclick="toggleCustomTextField1()"> CoPilot or other Agent Assist App
+    <div id="CustomAATextField1" style="display: none; margin-left: 10px;">
+        <input type="text" id="customText1" name="customText1" value="Default_CoPilot" />
+    </div>
+</label>
+<label>
+    <input type="checkbox" id="autoSummaryCheckbox1" name="AAoptions1" value="AutoSummary" onclick="toggleIndustryDropdown1()"> AutoSummary
+</label>
+
+<br /><br>
+<div id="aiModeWrapper1" style="display: none;">
+     <label style="margin-bottom: 10px;"><br>AI Mode: <br>
+        <input type="radio" name="AImode1" value="GenerativeAI"> GenerativeAI
+    </label>
+     <label style="margin-bottom: 10px;">
+        <input type="radio" name="AImode1" value="StructuredAI"> StructuredAI
+    </label>
+     <label style="margin-bottom: 10px;">
+        <input type="radio" name="AImode1" value="Hybrid" checked> Hybrid
+    </label>
+</div>
+
+<div id="industryWrapper1" style="display: none;">
+    <label for="industrySelector1">Select Enlighten Model:</label>
+    <select id="industrySelector1" name="industrySelector1">
+        <option value="" disabled selected>Select a model</option>
+        <option value="Generic">Generic</option>
+        <option value="Healthcare">Healthcare</option>
+        <option value="Retail">Retail</option>
+        <option value="Telecom">Telecom</option>
+        <option value="Travel">Travel & Hospitality</option>
+        <option value="Financial">Financial Services</option>
+    </select>
+</div>
+<br>
+<b>Feedback Management Survey?</b>&nbsp;&nbsp;<input type="checkbox" id="surveyCheckbox" name="survey" value="yes">
+<br /><br>
+</div>
+<div class="button-container">
+<button id="phoneButton" onclick="onPhoneButtonClick()" type="button">Generate Phone Call</button>
+</div>
+<br>
+<hr>
+<center><h3>Digital</h3></center>
+<div class="button-container">
+<button id="twitterButton" onclick="onTwitterButtonClick()" type="button">Twitter</button><button id="facebookButton" onclick="onFacebookButtonClick()" type="button">Facebook</button><button id="instagramButton" onclick="onInstagramButtonClick()" type="button">Instagram</button><button id="linkedinButton" onclick="onLinkedInButtonClick()" type="button">LinkedIn</button><button id="whatsappButton" onclick="onWhatsAppButtonClick()" type="button">WhatsApp</button><button id="emailButton" onclick="onEmailButtonClick()" type="button">Email</button><button id="chatButton" onclick="showChat()" type="button">Chat</button>
+</div>
+<br>
+<hr>
+ <center><h3>AutoSummary/RTIG</h3></center>
+<!-- <label for="agentID3">Agent ID:</label> <input id="agentID3" name="agentID3" type="text" /> -->
+<!-- <br><br> -->
+  <label for="scenarios">Scenario</label>
+  <select id="scenarios">
+   <option value="HealthOneShort">HealthOneShort</option>   
+   <option value="HealthOne">HealthOne</option>
+    <option value="CardOne">CardOne</option>
+    <option value="CardOneShort">CardOneShort</option>
+    <option value="CableOne">CableOne</option>
+    <option value="CableOneShort">CableOneShort</option>
+    <option value="RetailOne">RetailOne</option>
+    <option value="RetailOneShort">RetailOneShort</option>
+  </select>
+ <br><br>
+  Play: 
+   <label>
+    <input type="radio" name="play" value="CHAP1"> Chapter 1
+  </label>
+
+  <label>
+    <input type="radio" name="play" value="ALL" checked> ALL
+  </label>
+
+  <br><br>
+  Agent Assist: 
+   <label>
+    <input type="radio" name="AAoptions" value="RTIG"> RTIG
+  </label>
+
+  <label>
+    <input type="radio" name="AAoptions" value="AutoSummary" checked> AutoSummary
+  </label>
+
+  <label>
+    <input type="radio" name="AAoptions" value="Both"> Both
+  </label>
+  <br><br>
+  AI Mode: 
+    <label>
+    <input type="radio" name="AImode" value="GenerativeAI"> GenerativeAI
+  </label>
+   <label>
+    <input type="radio" name="AImode" value="StructuredAI"> StructuredAI
+  </label>
+  <label>  
+	<input type="radio" name="AImode" value="Hybrid" checked> Hybrid
+  </label>
+
+  <br><br>
+  <div class="button-container">
+    <button onclick="RTIG()">Generate Vertical Call</button>
+	</div>
+  <br>
+  <br>
+  <hr>
+   <center><h3>Custom Agent Assist Call</h3></center>
+  
+        <font size=2"><a id="clickHereLink" onclick="expandInstructions()">Instructions</a> 
+     
+	</font>
+  	  <div id="instructions" style="display: none;">
+    <pre>
+<font size=4"><b>
+Preparing your demo.
+</font></b>
+Step 1: Specify your Agent ID.
+Step 2: Click "Load Call Transcript" Button.  
+Step 3: Email Client opens, attach a suitable JSON file (filename.json).  
+		Note: You can use the Example GTP Generation Script or Example JSON Transcript links to understand what the format should be.
+Step 4: Submit email and wait for reply email stating your transcript was uploaded.
+
+<b>Note:</b> After loading a transcript, it will continue to be used until you load a new transcript.
+<font size=4"><b>
+To Demo:
+</font></b>
+Step 1: Specify your Agent ID.
+Step 2: Specify the following:
+		• CRM Agent - if applicable
+		• CallerID - used for screenpop with CRM
+		• Agent and Patron voices - Default voices are provided, but you can specify custom voices if desired
+		• Agent Assist options
+Step 3: Click the "Generate My Custom Call" Button.
+    </pre>
+  </div>
+<br /><br>
+<!-- <label for="agentID2">Agent ID:</label> -->
+<!-- <input id="agentID2" name="agentID2" type="text" /> -->
+<!-- <br> -->
+<div>
+  <input type="checkbox" id="embeddedCrmAgent" onchange="toggleDropdownVisibility()">
+  <label for="embeddedCrmAgent">CRM Agent</label>
+</div>
+<div id="crmDropdownContainer">
+  <label for="crmDropdown" id="crmLabel"></label>
+  <select id="crmDropdown" name="crmDropdown">
+    <option value="dynamics">Microsoft Dynamics</option>
+	<option value="oracle">Oracle</option>
+    <option value="salesforce">Salesforce</option>
+    <option value="servicenow">ServiceNow</option>
+    <option value="zendesk">Zendesk</option>
+  </select>
+  <!-- <label for="callerID">Caller ID:</label> <input id="callerID" name="callerID" type="text" value="Not Required"/><br> -->
+<!-- <font size='2'>For Screenpop</font> -->
+<!-- <br /> -->
+</div>
+<br><br>
+
+<div id="CMRconfigcontainer2"><b><label for="CRMconfig2" id="CRMconfig2" class="hidden">CRM Screenpop config:</b></label>
+<label for="callerID">Caller ID:</label> <input id="callerID" name="callerID" type="text" class="hidden"/>
+<label for="email2">Email Address:</label> <input id="email2" name="email2" type="text" class="hidden"/><br />
+  Search by:
+  <label>
+    <input type="radio" name="searchMethod2" value="phone" checked>
+    Phone Number
+  </label>
+  
+  <label>
+    <input type="radio" name="searchMethod2" value="email" >
+    Email
+  </label>	
+ <br><br>
+ </div>
+
+
+
+
+<br>
+<label for="customSkill2">Custom Skill:</label> <input id="customSkill2" name="customSkill2" type="text" value="Not Required" /><br />
+<font size='2'>For Queueing</font>
+<br /><br>
+  <div class="button-container">
+      <button id="autoSummaryEmailButton" onclick="onEmailAutoSummary()" type="button">Load Call Transcript</button>
+  </div>
+  <br>
+   <font size=2"><a id="clickHereLink" onclick="displayGPTContent()">Example GPT Generation Script</a> 
+   <br>
+   <a id="clickHereLink" onclick="expandJSON()">Example JSON Transcript</a>
+	   <br>
+   <a id="clickHereLink" onclick="expandProTip()">Pro Tip</a>
+	</font>
+  <div id="hiddenContent">
+     <pre>
+[
+  {
+    "role": "agent",
+    "verbiage": "Thank you for calling Xfinity technical support. My name is Alex. May I have your name, please?"
+  },
+  {
+    "role": "patron",
+    "verbiage": "Hi Alex, this is Sarah. I'm having issues with my Xfinity Internet. It's been really slow lately."
+  },
+  {
+    "role": "agent",
+    "verbiage": "I apologize for the inconvenience, Sarah. Let me check your connection. Are all the lights on your modem stable?"
+  },
+  {
+    "role": "patron",
+    "verbiage": "Yes, all the lights are on, but the internet speed is frustratingly slow, especially during peak hours."
+  },
+  {
+    "role": "agent",
+    "verbiage": "I understand, Sarah. Let me run a quick diagnostic on your connection. It seems there might be some congestion in your area. I'll optimize your settings for better performance. Please bear with me for a moment."
+  },
+  {
+    "role": "patron",
+    "verbiage": "Sure, take your time. I appreciate your help."
+  },
+  {
+    "role": "agent",
+    "verbiage": "Thank you for your patience, Sarah. I've made the adjustments. Please restart your modem, and let me know if you notice any improvement in your internet speed."
+  },
+  {
+    "role": "patron",
+    "verbiage": "Alright, I'll do that now. Thank you, Alex, for your assistance."
+  },
+  {
+    "role": "agent",
+    "verbiage": "You're welcome, Sarah. If the issue persists, don't hesitate to call us back. Have a great day!"
+  }
+]
+    </pre>
+    </div>
+	
+	  <div id="gptContent" style="display: none;">
+    <pre>
+This is an example of what you can ask GPT to create a suitable json file:
+
+Generate a transcript of a technical support call for Xfinity Internet. The call should include an 'agent' role and a 'patron' role and be 60 seconds in length. The output must conform to the following json schema:
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "array",
+  "items": [
+    {
+      "type": "object",
+      "properties": {
+        "role": {
+          "type": "string"
+        },
+        "verbiage": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "role",
+        "verbiage"
+      ]
+    }
+  ]
+}
+    </pre>
+  </div>
+  
+  	  <div id="proTip" style="display: none;">
+    <pre>
+Did you know you can add pauses (and change other things like rate of speech, etc.) using SSML markup in your json file?     
+ 
+Just put the speak tags around the text, and then where you want the pause, add &lt;break time=5s/&gt; - replacing 5 with how many seconds you want to wait.
+ 
+Example: 
+ 
+{
+    "role": "agent",
+    "verbiage": "&lt;speak&gt;Thank you for calling.  Please give me a moment to review your account.&lt;break time=5s/&gt; Ok, I found your account.  What can I help with today?&lt;/speak&gt;"
+  }
+    </pre>
+  </div>
+  
+  </font><br><br>
+        <label for="agentVoice">Agent Voice:</label>
+        <input type="text" id="agentVoice" name="agentVoice" value="en-US-Wavenet-C" />
+        <br><br>
+        <label for="patronVoice">Patron Voice:</label>
+        <input type="text" id="patronVoice" name="patronVoice"  value="en-US-Wavenet-D"/>
+		<font size="2"><br><a id="clickHereLink" href="https://cloud.google.com/text-to-speech/docs/voices" target="_blank">Voice Options</a></font>
+        <br><br>
+Agent Assist: 
+
+<br>
+<label style="display: flex; align-items: center;">
+    <input type="checkbox" name="AAoptions2" value="RTIG" onclick="toggleCustomRTIGField()"> RTIG App
+    <div id="CustomAARTIGField" style="display: none; margin-left: 10px;">
+        <input type="text" id="customRTIG" name="customRTIG" value="Default_RTIG" />
+    </div>
+</label>
+<label style="display: flex; align-items: center;">
+    <input type="checkbox" name="AAoptions2" value="Custom" onclick="toggleCustomTextField()"> CoPilot or other Agent Assist App
+    <div id="CustomAATextField" style="display: none; margin-left: 10px;">
+        <input type="text" id="customText" name="customText" value="Default_CoPilot" />
+    </div>
+</label>
+<label>
+    <input type="checkbox" id="autoSummaryCheckbox" name="AAoptions2" value="AutoSummary" checked onclick="toggleIndustryDropdown()"> AutoSummary
+</label>
+
+
+
+
+  
+
+<div id="aiModeWrapper" style="display: none;">
+     <label style="margin-bottom: 10px;"><br>AI Mode: <br>
+        <input type="radio" name="AImode2" value="GenerativeAI"> GenerativeAI
+    </label>
+     <label style="margin-bottom: 10px;">
+        <input type="radio" name="AImode2" value="StructuredAI"> StructuredAI
+    </label>
+     <label style="margin-bottom: 10px;">
+        <input type="radio" name="AImode2" value="Hybrid" checked> Hybrid
+    </label>
+</div>
+
+<div id="industryWrapper" style="display: none;">
+    <label for="industrySelector">Select Enlighten Model:</label>
+    <select id="industrySelector" name="industrySelector">
+        <option value="" disabled selected>Select a model</option>
+        <option value="Generic">Generic</option>
+        <option value="Healthcare">Healthcare</option>
+        <option value="Retail">Retail</option>
+        <option value="Telecom">Telecom</option>
+        <option value="Travel">Travel & Hospitality</option>
+        <option value="Financial">Financial Services</option>
+    </select>
+</div>
+<br><br>
+<div class="button-container">
+  <button onclick="customCall()">Generate My Custom Call</button>
+ </div>
+ 
+ <hr>
+ <center><h3>Personal Connection</h3>
+ <font size="2">Skill: Chimerical_OB_SF_Voice</font></center>
+ </div>
+<div class="button-container">
+<button id="pcButton" onclick="onPersonalConnectionClick()" type="button">Load My Leads</button>
+</div>
+<br><br>
+ </div>
+ 
+<script>
+
+    function onTwitterButtonClick() {
+      var twitterURL= "https://twitter.com/ChimericalCorp1";
+      window.open(twitterURL, "_blank");
+    }
+
+    function onFacebookButtonClick() {
+      var facebookURL = "https://fb.me/chimericalcorporation";
+      window.open(facebookURL, "_blank");
+    }
+
+    function onInstagramButtonClick() {
+      var instagramURL = "https://www.instagram.com/chimericalcorporation";
+      window.open(instagramURL, "_blank");
+    }
+
+    function onLinkedInButtonClick() {
+      var linkedInURL= "https://nice.com";
+      window.open(linkedInURL, "_blank");
+    }
+
+    function onWhatsAppButtonClick() {
+      var whatsappURL = "https://api.whatsapp.com/send?phone=%2B13143709891";
+      window.open(whatsappURL, "_blank");
+    }
+
+    function onEmailButtonClick() {
+      var email = "digitalfirstemail@gmail.com";
+      //var agentID = document.getElementById("agentID").value;
+	  var agentID = localStorage.getItem('agentID');
+      if (agentID .trim() === "") {
+        alert("Must fill in AgentID.");
+        return;
+      }
+
+      var subject = 'Help with case ' + agentID;
+
+     var mailtoLink = "mailto:" + email + "?subject=" + encodeURIComponent(subject);
+      window.location.href = mailtoLink;
+    }
+	
+	function onEmailAutoSummary() {
+      var email = "autosummaryTranscript_sedemob32@mail.nice-incontact.com";
+      //var agentID = document.getElementById("agentID").value;
+	  var agentID = localStorage.getItem('agentID');
+      if (agentID .trim() === "") {
+        alert("Must fill in AgentID.");
+        return;
+      }
+
+      var subject = agentID;
+
+     var mailtoLink = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=Attach%20your%20JSON%20file%20%28filename.json%29.";
+      window.location.href = mailtoLink;
+    }
+	
+	 function onPersonalConnectionClick() {
+
+	  //var agentID = document.getElementById("agentID").value;
+	  var agentID = localStorage.getItem('agentID');
+      var phoneNumber = document.getElementById("phoneNumber").value;
+
+      if (agentID.trim() === "") {
+        alert("Must fill in AgentID.");
+        return;
+      }
+	  
+	  var dialMode = 'Predictive';
+	  
+	     var url = 'https://home-b32.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=ChimericalCorporation%5CChimerical_XS_Clear_SF_Leads&bus_no=4597359&scriptId=172124296&skill_no=4134464&Guid=2f080976-b3a3-48d6-8346-862727f0cdeb';
+      url += '&p1=' + agentID;
+	  url += '&p2=' + dialMode;
+
+		  		  
+
+	//Build form 
+			var myform = document.createElement("form");
+            myform.action = url;
+			myform.target = "_blank";
+            myform.method = "post";
+            document.body.appendChild(myform);
+				
+			ChatWindow = window.open(url,"Chat","location=0,menu=0,resize=0,status=0,scrollbars=0,width=1,height=1,left=111000,top=111000");
+			setTimeout(function() {ChatWindow.close();},2000);
+	
+	}
+	
+
+    function onPhoneButtonClick(path) {
+
+	  //var agentID = document.getElementById("agentID").value;
+      var phoneNumber = document.getElementById("phoneNumber").value;
+	  var agentID = localStorage.getItem('agentID');
+
+      if (agentID.trim() === "") {
+        alert("Must fill in AgentID.");
+        return;
+      }
+	  
+	 // If Standard Call is selected (top section)
+	if (path !== 'RTIG') {
+       if (phoneNumber.trim() === "" || !isValidPhoneNumber(phoneNumber)) {
+        alert("Please enter a valid phone number.");
+        return;
+      }
+		path = 'Default';
+		callerID = '';
+		email = '';
+		selectedSearch = '';
+		selectedIndustry = '';
+		selectedAIMode = '';
+		customApp = '';
+		customRTIG = '';
+		phoneScript = '';
+		customerName = '';
+		checkboxValue = '';
+		
+		var phoneNumber= document.getElementById("phoneNumber").value;
+		
+		var customizeCallCheckbox = document.getElementById('customizeCallCheckbox');
+		if (customizeCallCheckbox.checked) { 
+		
+				var phoneScript= document.getElementById("phoneScript").value;
+		var customerName = document.getElementById("customerName").value;
+
+		var checkbox = document.getElementById("surveyCheckbox");
+		var checkboxValue = checkbox.checked ? checkbox.value : "no";
+		
+		// Get Custom RTIG and custom Agent Assist App Values
+		var customRTIGCheckbox = document.querySelector('input[name="AAoptions1"][value="RTIG"]');
+		var customRTIGField = document.getElementById('CustomAARTIGField1');
+
+		// Initialize with an empty string
+		var customRTIG = "";  
+		
+		if (customRTIGCheckbox.checked) {
+			customRTIG = document.getElementById('customRTIG1').value;
+		}
+
+		var customCheckbox = document.querySelector('input[name="AAoptions1"][value="Custom"]');
+		var customTextField = document.getElementById('CustomAATextField1');
+
+		var customApp = "";  // Initialize with an empty string
+
+		if (customCheckbox.checked) {
+			customApp = document.getElementById('customText1').value;
+		}
+
+
+		// Get all radio buttons with the name "AImode1"
+		  var AImodeButtons = document.getElementsByName("AImode1");
+	 
+		   // Find the selected radio button
+		  var selectedAIMode;
+		  for (var i = 0; i < AImodeButtons.length; i++) {
+			if (AImodeButtons[i].checked) {
+			  selectedAIMode = AImodeButtons[i].value;
+			  break;
+			}
+		  }
+
+
+		 //Get values from industry/model dropdown
+		var autoSummaryCheckbox = document.querySelector('input[name="AAoptions1"][value="AutoSummary"]');
+		var dropdown = document.getElementById("industrySelector1");
+		var selectedIndustry = dropdown.options[dropdown.selectedIndex].value;
+
+		if (autoSummaryCheckbox.checked && selectedIndustry === "") {
+			alert("Please select an industry.");
+			return;
+		} 
+		if (selectedIndustry === "") {
+			selectedIndustry = 'NoAutoSummary';
+		}
+		
+		
+		}
+		
+
+			
+} 
+		  
+		  //If Vertical Call is selected (middle section)
+		  else {
+			 
+			  var selectedScenario = document.getElementById("scenarios").value;
+			  var optionsRadioButtons = document.getElementsByName("AAoptions");
+
+			  // Find the selected radio button
+			  var selectedOption;
+			  for (var i = 0; i < optionsRadioButtons.length; i++) {
+				if (optionsRadioButtons[i].checked) {
+				  selectedOption = optionsRadioButtons[i].value;
+				  if (selectedOption !== 'RTIG') {
+				  document.querySelector('input[name="play"][value="ALL"]').checked = true;
+				  }
+				  break;
+				}
+			  }
+
+			  // Get all radio buttons with the name "play"
+			  var playButtons = document.getElementsByName("play");
+		 
+			   // Find the selected radio button
+			  var selectedPlay;
+			  for (var i = 0; i < playButtons.length; i++) {
+				if (playButtons[i].checked) {
+				  selectedPlay = playButtons[i].value;
+				  break;
+				}
+			  }
+			
+			// Get all radio buttons with the name "AImode"
+			  var AImodeButtons = document.getElementsByName("AImode");
+		 
+			   // Find the selected radio button
+			  var selectedAIMode;
+			  for (var i = 0; i < AImodeButtons.length; i++) {
+				if (AImodeButtons[i].checked) {
+				  selectedAIMode = AImodeButtons[i].value;
+				  break;
+				}
+			  }
+		
+	}
+
+      
+	  
+	  //Get CRM2 Values
+		var checkbox = document.getElementById("embeddedCrmAgent2");
+		var selectedCrm2Value;
+		
+		//If CRM is selected
+		if (!checkbox.checked) {
+			selectedCrm2Value = 'NA';
+		} else {
+			var crmDropdown2 = document.getElementById("crmDropdown2");
+			selectedCrm2Value = crmDropdown2.value;
+		
+		//Get Caller ID
+		var callerID = document.getElementById("callerID").value;
+		  if (isNumeric(callerID)) {
+		} else {
+			// The value is not numeric, set it to 'NA'
+			callerID = 'NA';
+		}
+		
+		//Get Email
+		var email = document.getElementById("email").value;
+		if (email === "") {
+		email = 'NA';
+		}
+		
+		// Get all radio buttons with the name "searchMethod"
+      var searchButtons = document.getElementsByName("searchMethod");
+ 
+       // Find the selected radio button
+      var selectedSearch;
+      for (var i = 0; i < searchButtons.length; i++) {
+        if (searchButtons[i].checked) {
+          selectedSearch = searchButtons[i].value;
+          break;
+        }
+      }		
+			
+		}
+
+		//Get Custom Skill
+	  var customSkill = document.getElementById("customSkill").value;
+		  if (isNumeric(customSkill)) {
+		} else {
+			// The value is not numeric, set it to 'NA'
+			customSkill = 'NA';
+		}
+
+      var url = 'https://home-b32.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=ChimericalCorporation%5CExtension%5CChimericalClickToCall&bus_no=4597359&scriptId=85558135&skill_no=4134464&Guid=2f080976-b3a3-48d6-8346-862727f0cdeb';
+      url += '&p1=' + 'extension|' + agentID+ '|' + phoneNumber+ '|' + '' + '|' + '' + '|' + phoneScript+ '|' +customerName+ '|' +checkboxValue;
+	 
+	 if (path === 'RTIG') {
+	  url += '&p2=' + path + '|' + selectedScenario+ '|' + selectedPlay+ '|' + selectedOption+ '|' + selectedAIMode;
+	  } else {
+	  url += '&p2=customSkill' + '|' + customSkill;
+	  url += '&p3=CustomCRM' + '|' +selectedCrm2Value+ '|' + callerID+ '|' + email+ '|' + selectedSearch;
+	  url += '&p4=' + selectedIndustry+ '|' + selectedAIMode;
+	  url += '&p5=' + customApp+ '|' + customRTIG;
+	  }
+	 
+	 
+		//Build form 
+		var myform = document.createElement("form");
+        myform.action = url;
+		myform.target = "_blank";
+        myform.method = "post";
+        document.body.appendChild(myform);
+				
+		ChatWindow = window.open(url,"Chat","location=0,menu=0,resize=0,status=0,scrollbars=0,width=1,height=1,left=111000,top=111000");
+		setTimeout(function() {ChatWindow.close();},2000);
+    }
+	
+	
+	 function onCustomButtonClick() {
+
+	//Get AgentID
+	  //var agentID = document.getElementById("agentID").value;
+	  var agentID = localStorage.getItem('agentID');
+  
+      if (agentID.trim() === "") {
+        alert("Must fill in AgentID.");
+        return;
+      }
+
+	 //Get values from industry/model dropdown
+    var autoSummaryCheckbox = document.querySelector('input[name="AAoptions2"][value="AutoSummary"]');
+    var dropdown = document.getElementById("industrySelector");
+    var selectedIndustry = dropdown.options[dropdown.selectedIndex].value;
+
+    if (autoSummaryCheckbox.checked && selectedIndustry === "") {
+        alert("Please select an industry.");
+		return;
+    } else if (selectedIndustry === "" && customRTIG === "" && customApp === "") {
+        alert("Please select an Agent Assist Option.");
+		return;
+    }
+	if (selectedIndustry === "") {
+		selectedIndustry = 'NoAutoSummary';
+	}
+	
+	// Get all radio buttons with the name "AImode2"
+      var AImodeButtons = document.getElementsByName("AImode2");
+ 
+       // Find the selected radio button
+      var selectedAIMode;
+      for (var i = 0; i < AImodeButtons.length; i++) {
+        if (AImodeButtons[i].checked) {
+          selectedAIMode = AImodeButtons[i].value;
+          break;
+        }
+      }
+
+	
+	  //Get values of custom voices
+	  var agentVoiceValue = document.getElementById("agentVoice").value;
+      var patronVoiceValue = document.getElementById("patronVoice").value;	
+	  
+	  //Get CRM Values
+	  var checkbox = document.getElementById("embeddedCrmAgent");
+      var crmDropdown = document.getElementById("crmDropdown");
+
+	   if (checkbox.checked) {
+      var selectedCrmValue = crmDropdown.value;
+	  
+	  	  // Get all radio buttons with the name "searchMethod"
+      var searchButtons = document.getElementsByName("searchMethod2");
+ 
+       // Find the selected radio button
+      var selectedSearch;
+      for (var i = 0; i < searchButtons.length; i++) {
+        if (searchButtons[i].checked) {
+          selectedSearch = searchButtons[i].value;
+        }
+	   //Get Email
+		var email = document.getElementById("email").value;
+		if (email === "") {
+		email = 'NA';
+		}
+	  
+	  //Get Caller ID
+	  var callerID = document.getElementById("callerID").value;
+		  if (isNumeric(callerID)) {
+		} else {
+			// The value is not numeric, set it to 'NA'
+			callerID = 'NA';
+		}
+		
+		
+      }
+	    } else {
+		selectedCrmValue = 'NA';
+	  }
+	  
+	  
+	    //Get Custom Skill
+	  var customSkill = document.getElementById("customSkill").value;
+	 
+		  if (isNumeric(customSkill)) {
+		} else {
+			// The value is not numeric, set it to 'NA'
+			customSkill = 'NA';
+		}
+
+	// Get Custom RTIG and custom Agent Assist App Values
+	var customRTIGCheckbox = document.querySelector('input[name="AAoptions2"][value="RTIG"]');
+	var customRTIGField = document.getElementById('CustomAARTIGField');
+
+	var customRTIG = "";  // Initialize with an empty string
+
+	if (customRTIGCheckbox.checked) {
+		customRTIG = document.getElementById('customRTIG').value;
+	}
+
+	var customCheckbox = document.querySelector('input[name="AAoptions2"][value="Custom"]');
+	var customTextField = document.getElementById('CustomAATextField');
+
+	var customApp = "";  // Initialize with an empty string
+
+	if (customCheckbox.checked) {
+		customApp = document.getElementById('customText').value;
+	}
+
+	  
+      var url = 'https://home-b32.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=ChimericalCorporation%5CExtension%5CASUMRTIG%5CASUMRTIG_ClickToCall&bus_no=4597359&scriptId=171373343&skill_no=4134464&Guid=2f080976-b3a3-48d6-8346-862727f0cdeb';
+      url += '&p1=CustomCall';
+	  url += '&p2=' + agentID;
+	  url += '&p3=' + selectedCrmValue+ '|' + callerID+ '|' + email+ '|' + selectedSearch;
+	  url += '&p4=' + selectedIndustry+ '|' + selectedAIMode;
+	  url += '&p5=' + customApp+ '|' + customRTIG;
+	  url += '&p6=' + agentVoiceValue + '|' + patronVoiceValue;
+	  url += '&p7=' + customSkill;
+	  
+
+
+	//Build form 
+			var myform = document.createElement("form");
+            myform.action = url;
+			myform.target = "_blank";
+            myform.method = "post";
+            document.body.appendChild(myform);
+				
+			ChatWindow = window.open(url,"Chat","location=0,menu=0,resize=0,status=0,scrollbars=0,width=1,height=1,left=111000,top=111000");
+			setTimeout(function() {ChatWindow.close();},2000);
+    }
+
+    function isValidPhoneNumber(phoneNumber) {
+      return /\d{10,}/.test(phoneNumber);
+    }
+		
+    function RTIG() {
+	event.preventDefault(); 
+	onPhoneButtonClick('RTIG');
+	return false;
+    }
+	function customCall() {
+	event.preventDefault(); 
+	onCustomButtonClick();
+	return false;
+    }
+	
+	
+	function showChat() {
+
+	  	  //Get CRM2 Values
+		var checkbox = document.getElementById("embeddedCrmAgent2");
+		var selectedCrm2Value;
+
+		if (!checkbox.checked) {
+			selectedCrm2Value = 'NA';
+		} else {
+			var crmDropdown2 = document.getElementById("crmDropdown2");
+			selectedCrm2Value = crmDropdown2.value;
+		}
+
+      //var agentID = document.getElementById("agentID").value;
+	  var agentID = localStorage.getItem('agentID');
+
+      if (agentID.trim() === "") {
+        alert("Must fill in AgentID.");
+        return;
+      }
+	  
+	  
+	   // Get all radio buttons with the name "searchMethod"
+      var searchButtons = document.getElementsByName("searchMethod");
+ 
+       // Find the selected radio button
+      var selectedSearch;
+      for (var i = 0; i < searchButtons.length; i++) {
+        if (searchButtons[i].checked) {
+          selectedSearch = searchButtons[i].value;
+        }
+      }
+	  
+	  
+	  	var callerID2 = document.getElementById('callerID2').value;
+		var email = document.getElementById('email').value;
+
+	  
+	  if (selectedSearch === 'email') {
+		searchField = email;
+	  } else {
+	    searchField = callerID2;
+	  }
+	 					
+		openNewWindow(agentID,selectedCrm2Value,searchField)			
+
+	
+}
+
+
+
+	//Display Instructions
+function expandInstructions() {
+      var instructions = document.getElementById('instructions');
+      var computedStyle = window.getComputedStyle(instructions);
+
+      if (computedStyle.display === 'none') {
+        instructions.style.display = 'block';
+      } else {
+        instructions.style.display = 'none';
+      }
+	  	return false;
+    }
+		
+	
+	//Display hidden json example
+  function expandJSON() {
+      var hiddenContent = document.getElementById('hiddenContent');
+      var computedStyle = window.getComputedStyle(hiddenContent);
+
+      if (computedStyle.display === 'none') {
+        hiddenContent.style.display = 'block';
+      } else {
+        hiddenContent.style.display = 'none';
+      }
+	  	return false;
+    }
+	
+	//Display hidden gpt script example
+	function displayGPTContent() {
+      var gptContent = document.getElementById('gptContent');
+      var computedStyle = window.getComputedStyle(gptContent);
+
+      if (computedStyle.display === 'none') {
+        gptContent.style.display = 'block';
+        document.getElementById('hiddenContent').style.display = 'none'; // Hide hidden content
+      } else {
+        gptContent.style.display = 'none';
+      }
+      return false;
+    }
+	
+    //Display Pro Tip
+  function expandProTip() {
+      var proTip = document.getElementById('proTip');
+      var computedStyle = window.getComputedStyle(proTip);
+
+      if (computedStyle.display === 'none') {
+        proTip.style.display = 'block';
+      } else {
+        proTip.style.display = 'none';
+      }
+	  	return false;
+    }
+	
+	
+	//Open chat in new window
+	    function openNewWindow(param1,param2,param3) {
+    	
+	var queryString = 'param1=' + encodeURIComponent(param1) +
+                      '&param2=' + encodeURIComponent(param2) +
+                      '&param3=' + encodeURIComponent(param3);
+    
+
+        // Open a new window with the encoded variable in the URL
+        window.open('https://chimericalcorporation.com/chatwindow.html?' + queryString, '_blank', 'width=400,height=600,location=no');
+    }
+	
+	// Function to toggle visibility and clear contents based on checkbox state
+	function toggleCustomTextField() {
+    var customCheckbox = document.querySelector('input[name="AAoptions2"][value="Custom"]');
+    var customTextField = document.getElementById('CustomAATextField');
+
+    if (customCheckbox.checked) {
+        customTextField.style.display = 'block';
+    } else {
+        customTextField.style.display = 'none';
+        //clearCustomTextField();
+    }
+}
+
+	function toggleCustomTextField1() {
+    var customCheckbox = document.querySelector('input[name="AAoptions1"][value="Custom"]');
+    var customTextField = document.getElementById('CustomAATextField1');
+
+    if (customCheckbox.checked) {
+        customTextField.style.display = 'block';
+    } else {
+        customTextField.style.display = 'none';
+        //clearCustomTextField();
+    }
+}
+
+	// Function to toggle visibility and clear contents based on checkbox state
+	function toggleCustomRTIGField() {
+    var customRTIGCheckbox = document.querySelector('input[name="AAoptions2"][value="RTIG"]');
+    var customRTIGField = document.getElementById('CustomAARTIGField');
+
+    if (customRTIGCheckbox.checked) {
+        customRTIGField.style.display = 'block';
+    } else {
+        customRTIGField.style.display = 'none';
+    }
+}
+
+	function toggleCustomRTIGField1() {
+    var customRTIGCheckbox = document.querySelector('input[name="AAoptions1"][value="RTIG"]');
+    var customRTIGField = document.getElementById('CustomAARTIGField1');
+
+    if (customRTIGCheckbox.checked) {
+        customRTIGField.style.display = 'block';
+    } else {
+        customRTIGField.style.display = 'none';
+    }
+}
+
+
+	
+    // Function to clear the contents of email and callerID fields
+	//function clearCRMFields() {
+	//	document.getElementById('callerID2').value = "";
+	//	document.getElementById('email').value = "";
+	//}
+
+
+function toggleIndustryDropdown() {
+    var autoSummaryCheckbox = document.getElementById('autoSummaryCheckbox');
+    var industryWrapper = document.getElementById('industryWrapper');
+    var industryDropdown = document.getElementById('industrySelector');
+
+    // If "AutoSummary" checkbox is checked, show the Industry drop-down selector; otherwise, hide them
+    industryWrapper.style.display = autoSummaryCheckbox.checked ? 'block' : 'none';
+
+    var aiModeWrapper = document.getElementById('aiModeWrapper');
+
+    // If "AutoSummary" checkbox is checked, show the AI Mode radio buttons; otherwise, hide them
+    aiModeWrapper.style.display = autoSummaryCheckbox.checked ? 'block' : 'none';
+
+    // Reset dropdown to default value when the checkbox is unchecked
+    if (!autoSummaryCheckbox.checked) {
+        industryDropdown.value = ""; // Assuming the default value is an empty string
+    }
+}
+
+function toggleIndustryDropdown1() {
+    var autoSummaryCheckbox = document.getElementById('autoSummaryCheckbox1');
+    var industryWrapper = document.getElementById('industryWrapper1');
+    var industryDropdown = document.getElementById('industrySelector1');
+
+    // If "AutoSummary" checkbox is checked, show the Industry drop-down selector; otherwise, hide them
+    industryWrapper.style.display = autoSummaryCheckbox.checked ? 'block' : 'none';
+
+    var aiModeWrapper = document.getElementById('aiModeWrapper1');
+
+    // If "AutoSummary" checkbox is checked, show the AI Mode radio buttons; otherwise, hide them
+    aiModeWrapper.style.display = autoSummaryCheckbox.checked ? 'block' : 'none';
+
+    // Reset dropdown to default value when the checkbox is unchecked
+    if (!autoSummaryCheckbox.checked) {
+        industryDropdown.value = ""; // Assuming the default value is an empty string
+    }
+}
+
+	function toggleDropdownVisibility() {
+		var dropdownContainer = document.getElementById("crmDropdownContainer");
+		var checkbox = document.getElementById("embeddedCrmAgent");
+
+		// Toggle the visibility of the dropdown container based on the checkbox state
+		dropdownContainer.style.display = checkbox.checked ? "inline" : "none";
+	    CMRconfigcontainer2.style.display = checkbox.checked ? "inline" : "none";
+	  
+
+	  // Toggle the visibility of other elements based on the checkbox state
+	  document.getElementById('callerID').style.display = checkbox.checked ? 'block' : 'none';
+	  document.getElementById('email2').style.display = checkbox.checked ? 'block' : 'none';
+	  document.getElementById('CRMconfig2').style.display = checkbox.checked ? 'block' : 'none';
+
+	  // Clear the contents of callerID and email2 when checkbox is unchecked
+	  if (!checkbox.checked) {
+		document.getElementById('callerID').value = '';
+		document.getElementById('email2').value = '';
+	  }
+	  
+	  }
+	  
+	function toggleDropdownVisibility2() {
+	  var dropdownContainer = document.getElementById("crmDropdownContainer2");
+	  var checkbox = document.getElementById("embeddedCrmAgent2");
+
+	  // Toggle the visibility of the dropdown container based on the checkbox state
+	  CMRconfigcontainer.style.display = checkbox.checked ? "inline" : "none";
+	  dropdownContainer.style.display = checkbox.checked ? "inline" : "none";
+
+	  // Toggle the visibility of other elements based on the checkbox state
+	  document.getElementById('callerID2').style.display = checkbox.checked ? 'block' : 'none';
+	  document.getElementById('email').style.display = checkbox.checked ? 'block' : 'none';
+	  document.getElementById('CRMconfig').style.display = checkbox.checked ? 'block' : 'none';
+
+	  // Clear the contents of callerID2 and email when checkbox is unchecked
+	  if (!checkbox.checked) {
+		document.getElementById('callerID2').value = '';
+		document.getElementById('email').value = '';
+	  }
+
+	  // Optionally toggle the visibility of additional elements
+	  //var searchByContainer = document.getElementById("searchByContainer");
+	}
+
+
+   function toggleCustomFields() {
+    var customizeCallCheckbox = document.getElementById('customizeCallCheckbox');
+    var customFieldsDiv = document.getElementById('customFields');
+
+    if (customizeCallCheckbox.checked) {
+      // If checkbox is checked, show the fields
+      customFieldsDiv.classList.remove('hidden');
+    } else {
+      // If checkbox is unchecked, hide the fields and clear their values
+      customFieldsDiv.classList.add('hidden');
+      //clearCustomFields();
+    }
+  }
+
+  <!-- function clearCustomFields() { -->
+    <!-- // Clear values of the custom fields -->
+    <!-- document.getElementById('phoneScript').value = ''; -->
+    <!-- document.getElementById('customSkill').value = ''; -->
+    <!-- document.getElementById('customerName').value = ''; -->
+  <!-- } -->
+	
+	 function onSubmitForm(event) {
+      // Your form submission logic here
+      return false; // To prevent the form from actually submitting
+    }
+	
+	 document.addEventListener('DOMContentLoaded', function () {
+    // Add event listeners and other initialization code here
+	var customCallOptions = document.getElementsByName('customCallOptions');
+	for (var i = 0; i < customCallOptions.length; i++) {
+		customCallOptions[i].addEventListener('change', toggleIndustryAIOptions);	
+	}
+	
+		    // Function to sync fields
+        function syncFields(source, target) {
+            target.value = source.value;
+        }
+
+	
+		var customSkill = document.getElementById('customSkill');
+        var customSkill2 = document.getElementById('customSkill2');
+		
+
+		email.addEventListener('input', function() {
+			syncFields(email, email2);
+		});
+
+		email2.addEventListener('input', function() {
+			syncFields(email2, email);
+		});
+		
+		callerID.addEventListener('input', function() {
+			syncFields(callerID, callerID2);
+		});
+
+		callerID2.addEventListener('input', function() {
+			syncFields(callerID2, callerID);
+		});
+		
+		customSkill.addEventListener('input', function() {
+			syncFields(customSkill, customSkill2);
+		});
+
+		customSkill2.addEventListener('input', function() {
+			syncFields(customSkill2, customSkill);
+		});
+		
+				
+	toggleIndustryDropdown();
+	
+	});
+	
+	// Function to check if a value is numeric
+	function isNumeric(value) {
+		return !isNaN(parseFloat(value)) && isFinite(value);
+	}
+	
+  // Function to display AgentID on the webpage
+    function displayAgentID() {
+        // Check if AgentID is already in localStorage
+        var agentID = localStorage.getItem('agentID');
+
+        if (!agentID) {
+            agentID = prompt("Please enter your AgentID:");
+
+            if (agentID === null || agentID === "") {
+                alert("AgentID is required. Please refresh the page and enter a valid AgentID.");
+            } else {
+                localStorage.setItem('agentID', agentID);
+            }
+        }
+
+        // Display AgentID on the webpage
+        var agentIDDisplayElement = document.getElementById('agentIDDisplay');
+        agentIDDisplayElement.textContent = "AgentID: " + agentID;
+    }
+
+    // Call the function immediately after the script is encountered
+    displayAgentID();
+
+	function clearStorage() {
+		localStorage.clear();
+		location.reload();
+	}
+
+
+  </script>
+  
+  
+ 
