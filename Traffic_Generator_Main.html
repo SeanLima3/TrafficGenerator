@@ -684,33 +684,7 @@
 		}
 		
 		//Get CRM value, if checked
-		  let selectedCrm2Value = getCRM2();
-          
-          //Get Caller ID
-          var callerID = document.getElementById("callerID").value;
-            if (isNumeric(callerID)) {
-          } else {
-              // The value is not numeric, set it to 'NA'
-              callerID = 'NA';
-          }
-          
-          //Get Email
-          var email = document.getElementById("email").value;
-          if (email === "") {
-          email = 'NA';
-          }
-          
-          // Get all radio buttons with the name "searchMethod"
-        var searchButtons = document.getElementsByName("searchMethod");
-   
-         // Find the selected radio button
-        var selectedSearch;
-        for (var i = 0; i < searchButtons.length; i++) {
-          if (searchButtons[i].checked) {
-            selectedSearch = searchButtons[i].value;
-            break;
-          }
-        }		
+		  let [selectedCrm2Value,searchField] = getCRM2();
       
           //Get Custom Skill
         var customSkill = document.getElementById("customSkill").value;
@@ -723,7 +697,7 @@
         var url = 'https://home-b32.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=ChimericalCorporation%5CExtension%5CChimericalClickToCall&bus_no=4597359&scriptId=85558135&skill_no=4134464&Guid=2f080976-b3a3-48d6-8346-862727f0cdeb';
         url += '&p1=' + 'extension|' + agentID+ '|' + phoneNumber+ '|' + '' + '|' + '' + '|' + phoneScript+ '|' +customerName+ '|' +checkboxValue;
         url += '&p2=customSkill' + '|' + customSkill;
-        url += '&p3=CustomCRM' + '|' +selectedCrm2Value+ '|' + callerID+ '|' + email+ '|' + selectedSearch;
+        url += '&p3=CustomCRM' + '|' +selectedCrm2Value+ '|' + searchField;
         url += '&p4=' + selectedIndustry+ '|' + selectedAIMode;
         url += '&p5=' + customApp+ '|' + customRTIG;
         
