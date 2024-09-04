@@ -535,23 +535,24 @@
   
       function onEmailButtonClick() {
         var email = "digitalfirstemail@gmail.com";
-        //var agentID = document.getElementById("agentID").value;
         var agentID = localStorage.getItem('agentID');
+
         if (agentID .trim() === "") {
           alert("Must fill in AgentID.");
           return;
         }
+         
+		 //Get CRM value, if checked
+		let [selectedCrm2Value,searchField] = getCRM2();
+		var subject = 'Help with case ' + agentID;
   
-        var subject = 'Help with case ' + agentID;
-  
-       var mailtoLink = "mailto:" + email + "?subject=" + encodeURIComponent(subject);
+       var mailtoLink = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A***" + selectedCrm2Value + "##" + searchField + "###";
         window.location.href = mailtoLink;
       }
-      
+
       function onEmailAutoSummary() {
-        var email = "autosummaryTranscript_sedemob32@mail.nice-incontact.com";
-        //var agentID = document.getElementById("agentID").value;
-        var agentID = localStorage.getItem('agentID');
+        var email = "TG_SaveTranscript@mail.nice-incontact.com";
+		var agentID = localStorage.getItem('agentID');
         if (agentID .trim() === "") {
           alert("Must fill in AgentID.");
           return;
@@ -593,11 +594,11 @@
               setTimeout(function() {ChatWindow.close();},2000);
       
       }
-      
+
+//Standard Call - top section  
   
       function onPhoneButtonClick(path) {
-  
-        //var agentID = document.getElementById("agentID").value;
+    
         var phoneNumber = document.getElementById("phoneNumber").value;
         var agentID = localStorage.getItem('agentID');
   
@@ -606,8 +607,7 @@
           return;
         }
         
-       // If Standard Call is selected (top section)
-      if (path !== 'RTIG') {
+ 
          if (phoneNumber.trim() === "" || !isValidPhoneNumber(phoneNumber)) {
           alert("Please enter a valid phone number.");
           return;
@@ -629,122 +629,62 @@
           var customizeCallCheckbox = document.getElementById('customizeCallCheckbox');
           if (customizeCallCheckbox.checked) { 
           
-                  var phoneScript= document.getElementById("phoneScript").value;
-          var customerName = document.getElementById("customerName").value;
-  
-          var checkbox = document.getElementById("surveyCheckbox");
-          var checkboxValue = checkbox.checked ? checkbox.value : "no";
-          
-          // Get Custom RTIG and custom Agent Assist App Values
-          var customRTIGCheckbox = document.querySelector('input[name="AAoptions1"][value="RTIG"]');
-          var customRTIGField = document.getElementById('CustomAARTIGField1');
-  
-          // Initialize with an empty string
-          var customRTIG = "";  
-          
-          if (customRTIGCheckbox.checked) {
-              customRTIG = document.getElementById('customRTIG1').value;
-          }
-  
-          var customCheckbox = document.querySelector('input[name="AAoptions1"][value="Custom"]');
-          var customTextField = document.getElementById('CustomAATextField1');
-  
-          var customApp = "";  // Initialize with an empty string
-  
-          if (customCheckbox.checked) {
-              customApp = document.getElementById('customText1').value;
-          }
-  
-  
-          // Get all radio buttons with the name "AImode1"
-            var AImodeButtons = document.getElementsByName("AImode1");
-       
-             // Find the selected radio button
-            var selectedAIMode;
-            for (var i = 0; i < AImodeButtons.length; i++) {
-              if (AImodeButtons[i].checked) {
-                selectedAIMode = AImodeButtons[i].value;
-                break;
-              }
-            }
-  
-  
-           //Get values from industry/model dropdown
-          var autoSummaryCheckbox = document.querySelector('input[name="AAoptions1"][value="AutoSummary"]');
-          var dropdown = document.getElementById("industrySelector1");
-          var selectedIndustry = dropdown.options[dropdown.selectedIndex].value;
-  
-          if (autoSummaryCheckbox.checked && selectedIndustry === "") {
-              alert("Please select an industry.");
-              return;
-          } 
-          if (selectedIndustry === "") {
-              selectedIndustry = 'NoAutoSummary';
-          }
-          
-          
-          }
-          
-  
-              
-  } 
-            
-            //If Vertical Call is selected (middle section)
-            else {
-               
-                var selectedScenario = document.getElementById("scenarios").value;
-                var optionsRadioButtons = document.getElementsByName("AAoptions");
-  
-                // Find the selected radio button
-                var selectedOption;
-                for (var i = 0; i < optionsRadioButtons.length; i++) {
-                  if (optionsRadioButtons[i].checked) {
-                    selectedOption = optionsRadioButtons[i].value;
-                    if (selectedOption !== 'RTIG') {
-                    document.querySelector('input[name="play"][value="ALL"]').checked = true;
-                    }
-                    break;
-                  }
-                }
-  
-                // Get all radio buttons with the name "play"
-                var playButtons = document.getElementsByName("play");
-           
-                 // Find the selected radio button
-                var selectedPlay;
-                for (var i = 0; i < playButtons.length; i++) {
-                  if (playButtons[i].checked) {
-                    selectedPlay = playButtons[i].value;
-                    break;
-                  }
-                }
-              
-              // Get all radio buttons with the name "AImode"
-                var AImodeButtons = document.getElementsByName("AImode");
-           
-                 // Find the selected radio button
-                var selectedAIMode;
-                for (var i = 0; i < AImodeButtons.length; i++) {
-                  if (AImodeButtons[i].checked) {
-                    selectedAIMode = AImodeButtons[i].value;
-                    break;
-                  }
-                }
-          
-      }
-  
-        
-        
-        //Get CRM2 Values
-          var checkbox = document.getElementById("embeddedCrmAgent2");
-          var selectedCrm2Value;
-          
-          //If CRM is selected
-          if (!checkbox.checked) {
-              selectedCrm2Value = 'NA';
-          } else {
-              var crmDropdown2 = document.getElementById("crmDropdown2");
-              selectedCrm2Value = crmDropdown2.value;
+			  var phoneScript= document.getElementById("phoneScript").value;
+			  var customerName = document.getElementById("customerName").value;
+	  
+			  var checkbox = document.getElementById("surveyCheckbox");
+			  var checkboxValue = checkbox.checked ? checkbox.value : "no";
+			  
+			  // Get Custom RTIG and custom Agent Assist App Values
+			  var customRTIGCheckbox = document.querySelector('input[name="AAoptions1"][value="RTIG"]');
+			  var customRTIGField = document.getElementById('CustomAARTIGField1');
+	  
+			  // Initialize with an empty string
+			  var customRTIG = "";  
+			  
+			  if (customRTIGCheckbox.checked) {
+				  customRTIG = document.getElementById('customRTIG1').value;
+			  }
+	  
+			  var customCheckbox = document.querySelector('input[name="AAoptions1"][value="Custom"]');
+			  var customTextField = document.getElementById('CustomAATextField1');
+	  
+			  var customApp = "";  // Initialize with an empty string
+	  
+			  if (customCheckbox.checked) {
+				  customApp = document.getElementById('customText1').value;
+			  }
+	  
+	  
+			  // Get all radio buttons with the name "AImode1"
+				var AImodeButtons = document.getElementsByName("AImode1");
+		   
+				 // Find the selected radio button
+				var selectedAIMode;
+				for (var i = 0; i < AImodeButtons.length; i++) {
+				  if (AImodeButtons[i].checked) {
+					selectedAIMode = AImodeButtons[i].value;
+					break;
+				  }
+				}
+	  
+	  
+			   //Get values from industry/model dropdown
+			  var autoSummaryCheckbox = document.querySelector('input[name="AAoptions1"][value="AutoSummary"]');
+			  var dropdown = document.getElementById("industrySelector1");
+			  var selectedIndustry = dropdown.options[dropdown.selectedIndex].value;
+	  
+			  if (autoSummaryCheckbox.checked && selectedIndustry === "") {
+				  alert("Please select an industry.");
+				  return;
+			  } 
+			  if (selectedIndustry === "") {
+				  selectedIndustry = 'NoAutoSummary';
+			  }  
+		}
+		
+		//Get CRM value, if checked
+		  let selectedCrm2Value = getCRM2();
           
           //Get Caller ID
           var callerID = document.getElementById("callerID").value;
@@ -771,9 +711,7 @@
             break;
           }
         }		
-              
-          }
-  
+      
           //Get Custom Skill
         var customSkill = document.getElementById("customSkill").value;
             if (isNumeric(customSkill)) {
@@ -784,15 +722,11 @@
   
         var url = 'https://home-b32.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=ChimericalCorporation%5CExtension%5CChimericalClickToCall&bus_no=4597359&scriptId=85558135&skill_no=4134464&Guid=2f080976-b3a3-48d6-8346-862727f0cdeb';
         url += '&p1=' + 'extension|' + agentID+ '|' + phoneNumber+ '|' + '' + '|' + '' + '|' + phoneScript+ '|' +customerName+ '|' +checkboxValue;
-       
-       if (path === 'RTIG') {
-        url += '&p2=' + path + '|' + selectedScenario+ '|' + selectedPlay+ '|' + selectedOption+ '|' + selectedAIMode;
-        } else {
         url += '&p2=customSkill' + '|' + customSkill;
         url += '&p3=CustomCRM' + '|' +selectedCrm2Value+ '|' + callerID+ '|' + email+ '|' + selectedSearch;
         url += '&p4=' + selectedIndustry+ '|' + selectedAIMode;
         url += '&p5=' + customApp+ '|' + customRTIG;
-        }
+        
        
        
           //Build form 
@@ -804,15 +738,14 @@
                   
           ChatWindow = window.open(url,"Chat","location=0,menu=0,resize=0,status=0,scrollbars=0,width=1,height=1,left=111000,top=111000");
           setTimeout(function() {ChatWindow.close();},2000);
-      }
+ }     
 	  
 	  
 	   function onVerticalButtonClick(path) {
-
-	          //var agentID = document.getElementById("agentID").value;
+	   
         var phoneNumber = document.getElementById("phoneNumber").value;
         var agentID = localStorage.getItem('agentID');
-  
+
         if (agentID.trim() === "") {
           alert("Must fill in AgentID.");
           return;
@@ -937,7 +870,7 @@
          if (checkbox.checked) {
         var selectedCrmValue = crmDropdown.value;
         
-              // Get all radio buttons with the name "searchMethod"
+         // Get all radio buttons with the name "searchMethod"
         var searchButtons = document.getElementsByName("searchMethod2");
    
          // Find the selected radio button
@@ -1027,36 +960,29 @@
       onVerticalButtonClick('RTIG');
       return false;
       }
+	  
       function customCall() {
       event.preventDefault(); 
       onCustomButtonClick();
       return false;
       }
       
-      
-      function showChat() {
-  
-              //Get CRM2 Values
+		//Get CRM value and Search Field
+	   function getCRM2() {
+       
+        //Get CRM2 Values
           var checkbox = document.getElementById("embeddedCrmAgent2");
           var selectedCrm2Value;
-  
-          if (!checkbox.checked) {
-              selectedCrm2Value = 'NA';
-          } else {
+	   
+       //If CRM is selected
+       if (!checkbox.checked) {
+           selectedCrm2Value = 'NA';
+           } else {
               var crmDropdown2 = document.getElementById("crmDropdown2");
               selectedCrm2Value = crmDropdown2.value;
-          }
-  
-        //var agentID = document.getElementById("agentID").value;
-        var agentID = localStorage.getItem('agentID');
-  
-        if (agentID.trim() === "") {
-          alert("Must fill in AgentID.");
-          return;
-        }
-        
-        
-         // Get all radio buttons with the name "searchMethod"
+	      }
+	 
+		  // Get all radio buttons with the name "searchMethod"
         var searchButtons = document.getElementsByName("searchMethod");
    
          // Find the selected radio button
@@ -1067,20 +993,32 @@
           }
         }
         
-        
-            var callerID2 = document.getElementById('callerID2').value;
+          var callerID2 = document.getElementById('callerID2').value;
           var email = document.getElementById('email').value;
   
-        
         if (selectedSearch === 'email') {
           searchField = email;
         } else {
           searchField = callerID2;
         }
-                           
-          openNewWindow(agentID,selectedCrm2Value,searchField)			
+		  return [selectedCrm2Value, searchField];
+		}
+	  
+	  
+      function showChat() {
+  		 
+        //var agentID = document.getElementById("agentID").value;
+        var agentID = localStorage.getItem('agentID');
   
-      
+        if (agentID.trim() === "") {
+          alert("Must fill in AgentID.");
+          return;
+        }
+
+		 //Get CRM value, if checked
+		  let [selectedCrm2Value,searchField] = getCRM2();
+                           
+          openNewWindow(agentID,selectedCrm2Value,searchField)			    
   }
   
   
@@ -1199,15 +1137,7 @@
           customRTIGField.style.display = 'none';
       }
   }
-  
-  
-      
-      // Function to clear the contents of email and callerID fields
-      //function clearCRMFields() {
-      //	document.getElementById('callerID2').value = "";
-      //	document.getElementById('email').value = "";
-      //}
-  
+
   
   function toggleIndustryDropdown() {
       var autoSummaryCheckbox = document.getElementById('autoSummaryCheckbox');
@@ -1306,13 +1236,7 @@
         //clearCustomFields();
       }
     }
-  
-    <!-- function clearCustomFields() { -->
-      <!-- // Clear values of the custom fields -->
-      <!-- document.getElementById('phoneScript').value = ''; -->
-      <!-- document.getElementById('customSkill').value = ''; -->
-      <!-- document.getElementById('customerName').value = ''; -->
-    <!-- } -->
+
       
        function onSubmitForm(event) {
         // Your form submission logic here
