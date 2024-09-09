@@ -1,5 +1,22 @@
 <style>
   
+    /* Initially hide the content */
+    .content {
+      display: none;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+    }
+    /* Style the button or clickable header */
+    .section-header {
+      cursor: pointer;
+      background-color: #f1f1f1;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+  
+  
+  
     #hiddenContent {
         display: none;
         white-space: pre-line; /* Preserve newline characters */
@@ -40,7 +57,7 @@
       }
       #crmLabel,
       #crmLabel2,
-      #callerID2,
+      #phoneEmail,
       #callerID,
       #email,
       #email2,
@@ -89,19 +106,9 @@
   </div>
   <br>
   <hr>
-  <center><h3>Phone</h3></center>
-  
-    <!-- <label for="agentID">Agent ID:</label> -->
-    <!-- <input id="agentID" name="agentID" type="text" /> -->
-    <!-- <br><br> -->
-    <label for="phoneNumber">Phone Number:</label>
-    <input id="phoneNumber" name="phoneNumber" type="text" />
-    <br />
-    <font size='2'>(for click to call)</font>
-    <br /><br>
-    <div>
+      <div>
       <input type="checkbox" id="embeddedCrmAgent2" onchange="toggleDropdownVisibility2()">
-      <label for="embeddedCrmAgent2">CRM Agent <font size="2">(also applies to Chat channel)</font></label>
+      <label for="embeddedCrmAgent2">CRM Agent <font size="2"></font></label>
     </div>
     <div id="crmDropdownContainer2">
       <label for="crmDropdown2" id="crmLabel2"></label>
@@ -115,20 +122,24 @@
     </div>
     <br><br>
   <div id="CMRconfigcontainer"><b><label for="CRMconfig" id="CRMconfig" class="hidden">CRM Screenpop config:</b></label>
-  <label for="callerID2">Caller ID:</label> <input id="callerID2" name="callerID2" type="text" class="hidden"/>
-  <label for="email">Email Address:</label> <input id="email" name="email" type="text" class="hidden"/><br />
-    Search by:
-    <label>
-      <input type="radio" name="searchMethod" value="phone" checked>
-      Phone Number
-    </label>
-    
-    <label>
-      <input type="radio" name="searchMethod" value="email" >
-      Email
-    </label>	
-   <br><br>
-   </div>
+  <br>
+  <label for="phoneEmail">Phone or Email:</label> <input id="phoneEmail" name="phoneEmail" type="text" class="hidden"/>
+    </div>
+   <hr>
+  	 <!-- Clickable section header -->
+   <center><h3><div class="section-header" onclick="toggleContentPhone()">Phone Call (Click To Call)</div></h3></center>
+	
+  <!-- The expandable content -->
+  <div id="expandableContentPhone" class="content">
+<br>
+  
+
+    <label for="phoneNumber">Phone Number:</label>
+    <input id="phoneNumber" name="phoneNumber" type="text" />
+    <br />
+    <font size='2'>(for click to call)</font>
+    <br /><br>
+
     <div>
       <input type="checkbox" id="customizeCallCheckbox" onchange="toggleCustomFields()">
       <label for="customizeCallCheckbox">Customize Call</label>
@@ -200,13 +211,26 @@
   </div>
   <br>
   <hr>
-  <center><h3>Digital</h3></center>
+</div>
+   <!-- Clickable section header -->
+   <center><h3><div class="section-header" onclick="toggleContentDigital()">Digital Channels</div></h3></center>
+  
+    <!-- The expandable content -->
+  <div id="expandableContentDigital" class="content">
+  
   <div class="button-container">
   <button id="twitterButton" onclick="onTwitterButtonClick()" type="button">X (Twitter)</button><button id="facebookButton" onclick="onFacebookButtonClick()" type="button">Facebook</button><button id="instagramButton" onclick="onInstagramButtonClick()" type="button">Instagram</button><button id="linkedinButton" onclick="onLinkedInButtonClick()" type="button">LinkedIn</button><button id="whatsappButton" onclick="onWhatsAppButtonClick()" type="button">WhatsApp</button><button id="emailButton" onclick="onEmailButtonClick()" type="button">Email</button><button id="chatButton" onclick="showChat()" type="button">Chat</button>
   </div>
   <br>
   <hr>
-   <center><h3>AutoSummary/RTIG</h3></center>
+  </div>
+    	 <!-- Clickable section header -->
+   <center><h3><div class="section-header" onclick="toggleContentVertical()">AutoSummary/RTIG - Verticals</div></h3></center>
+  
+    <!-- The expandable content -->
+  <div id="expandableContentVertical" class="content">
+<br>
+   
   <!-- <label for="agentID3">Agent ID:</label> <input id="agentID3" name="agentID3" type="text" /> -->
   <!-- <br><br> -->
     <label for="scenarios">Scenario</label>
@@ -262,9 +286,14 @@
     <br>
     <br>
     <hr>
-     <center><h3>Custom Agent Assist Call</h3></center>
-    
-          <font size=2"><a id="clickHereLink" onclick="expandInstructions()">Instructions</a> 
+	</div>
+	 <!-- Clickable section header -->
+   <center><h3><div class="section-header" onclick="toggleContentCustom()">Custom Agent Assist Call</div></h3></center>
+	
+  <!-- The expandable content -->
+  <div id="expandableContentCustom" class="content">
+<br>
+    <font size=2"><a id="clickHereLink" onclick="expandInstructions()">Instructions</a> 
        
       </font>
           <div id="instructions" style="display: none;">
@@ -292,51 +321,40 @@
       </pre>
     </div>
   <br /><br>
-  <!-- <label for="agentID2">Agent ID:</label> -->
-  <!-- <input id="agentID2" name="agentID2" type="text" /> -->
-  <!-- <br> -->
-  <div>
-    <input type="checkbox" id="embeddedCrmAgent" onchange="toggleDropdownVisibility()">
-    <label for="embeddedCrmAgent">CRM Agent</label>
-  </div>
-  <div id="crmDropdownContainer">
-    <label for="crmDropdown" id="crmLabel"></label>
-    <select id="crmDropdown" name="crmDropdown">
-      <option value="dynamics">Microsoft Dynamics</option>
-      <option value="oracle">Oracle</option>
-      <option value="salesforce">Salesforce</option>
-      <option value="servicenow">ServiceNow</option>
-      <option value="zendesk">Zendesk</option>
-    </select>
-    <!-- <label for="callerID">Caller ID:</label> <input id="callerID" name="callerID" type="text" value="Not Required"/><br> -->
-  <!-- <font size='2'>For Screenpop</font> -->
-  <!-- <br /> -->
-  </div>
-  <br><br>
   
-  <div id="CMRconfigcontainer2"><b><label for="CRMconfig2" id="CRMconfig2" class="hidden">CRM Screenpop config:</b></label>
-  <label for="callerID">Caller ID:</label> <input id="callerID" name="callerID" type="text" class="hidden"/>
-  <label for="email2">Email Address:</label> <input id="email2" name="email2" type="text" class="hidden"/><br />
-    Search by:
-    <label>
-      <input type="radio" name="searchMethod2" value="phone" checked>
-      Phone Number
-    </label>
+  <!-- <div> -->
+    <!-- <input type="checkbox" id="embeddedCrmAgent" onchange="toggleDropdownVisibility()"> -->
+    <!-- <label for="embeddedCrmAgent">CRM Agent</label> -->
+  <!-- </div> -->
+  <!-- <div id="crmDropdownContainer"> -->
+    <!-- <label for="crmDropdown" id="crmLabel"></label> -->
+    <!-- <select id="crmDropdown" name="crmDropdown"> -->
+      <!-- <option value="dynamics">Microsoft Dynamics</option> -->
+      <!-- <option value="oracle">Oracle</option> -->
+      <!-- <option value="salesforce">Salesforce</option> -->
+      <!-- <option value="servicenow">ServiceNow</option> -->
+      <!-- <option value="zendesk">Zendesk</option> -->
+    <!-- </select> -->
+  <!-- </div> -->
+  <!-- <br><br> -->
+  
+  <!-- <div id="CMRconfigcontainer2"><b><label for="CRMconfig2" id="CRMconfig2" class="hidden">CRM Screenpop config:</b></label> -->
+  <!-- <label for="callerID">Caller ID:</label> <input id="callerID" name="callerID" type="text" class="hidden"/> -->
+  <!-- <label for="email2">Email Address:</label> <input id="email2" name="email2" type="text" class="hidden"/><br /> -->
+    <!-- Search by: -->
+    <!-- <label> -->
+      <!-- <input type="radio" name="searchMethod2" value="phone" checked> -->
+      <!-- Phone Number -->
+    <!-- </label> -->
     
-    <label>
-      <input type="radio" name="searchMethod2" value="email" >
-      Email
-    </label>	
-   <br><br>
-   </div>
+    <!-- <label> -->
+      <!-- <input type="radio" name="searchMethod2" value="email" > -->
+      <!-- Email -->
+    <!-- </label>	 -->
+   <!-- <br><br> -->
+   <!-- </div> -->
   
-  
-  
-  
-  <br>
-  <label for="customSkill2">Custom Skill:</label> <input id="customSkill2" name="customSkill2" type="text" value="Not Required" /><br />
-  <font size='2'>For Queueing</font>
-  <br /><br>
+
     <div class="button-container">
         <button id="autoSummaryEmailButton" onclick="onEmailAutoSummary()" type="button">Load Call Transcript</button>
     </div>
@@ -495,18 +513,78 @@
   <div class="button-container">
     <button onclick="customCall()">Generate My Custom Call</button>
    </div>
+
+
+  </div>	
+	
+  <!-- Clickable section header -->
+   <center><h3><div class="section-header" onclick="toggleContentPC()">Personal Connection</div></h3></center>
+  
+   <!-- The expandable content -->
+  <div id="expandableContentPC" class="content">
+<br>
    
-   <hr>
-   <center><h3>Personal Connection</h3>
    <font size="2">Skill: Chimerical_OB_SF_Voice</font></center>
-   </div>
+  
   <div class="button-container">
   <button id="pcButton" onclick="onPersonalConnectionClick()" type="button">Load My Leads</button>
   </div>
-  <br><br>
-   </div>
+     </div>
+   
    
   <script>
+  
+      // JavaScript to toggle the visibility of the custom call DIV
+    function toggleContentCustom() {
+      var content = document.getElementById("expandableContentCustom");
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    }
+	
+	 // JavaScript to toggle the visibility of the vertical call DIV
+    function toggleContentVertical() {
+      var content = document.getElementById("expandableContentVertical");
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    }
+  
+  
+  	 // JavaScript to toggle the visibility of the digital channels DIV
+    function toggleContentDigital() {
+      var content = document.getElementById("expandableContentDigital");
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    }
+	
+	
+	 // JavaScript to toggle the visibility of the Personal Connection DIV
+    function toggleContentPC() {
+      var content = document.getElementById("expandableContentPC");
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    }
+	
+    // JavaScript to toggle the visibility of the Phone (Click to Call) DIV
+    function toggleContentPhone() {
+      var content = document.getElementById("expandableContentPhone");
+      if (content.style.display === "block") {
+        content.style.display = "none";
+      } else {
+        content.style.display = "block";
+      }
+    }
   
       function onTwitterButtonClick() {
         var twitterURL= "https://x.com/onetraveldemoUS";
@@ -545,13 +623,17 @@
 		 //Get CRM value, if checked
 		let [selectedCrm2Value,searchField] = getCRM2();
 		var subject = 'Help with case ' + agentID;
-  
-       var mailtoLink = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A***" + selectedCrm2Value + "##" + searchField + "###";
+        bodyValue = ''
+		
+		if (selectedCrm2Value !== "NA") {
+		bodyValue = "%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A%0D%0A***" + selectedCrm2Value + "##" + searchField + "###";
+		}
+       var mailtoLink = "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + bodyValue;
         window.location.href = mailtoLink;
       }
 
       function onEmailAutoSummary() {
-        var email = "autosummaryTranscript_sedemob32@mail.nice-incontact.com";
+        var email = "TG_SaveTranscript@mail.nice-incontact.com";
 		var agentID = localStorage.getItem('agentID');
         if (agentID .trim() === "") {
           alert("Must fill in AgentID.");
@@ -714,22 +796,15 @@
           setTimeout(function() {ChatWindow.close();},2000);
  }     
 	  
-	  
+	  //Vertical Call Section
 	   function onVerticalButtonClick(path) {
 	   
-        var phoneNumber = document.getElementById("phoneNumber").value;
-        var agentID = localStorage.getItem('agentID');
-
-        if (agentID.trim() === "") {
-          alert("Must fill in AgentID.");
-          return;
-        }
-	    
+       var phoneNumber = document.getElementById("phoneNumber").value;
+       var agentID = localStorage.getItem('agentID');
 	  
-      var selectedScenario = document.getElementById("scenarios").value;
-	    //alert("Selected Scenario: " + selectedScenario);
-		
-	    // Get all radio buttons with the name "options"
+       var selectedScenario = document.getElementById("scenarios").value;
+	   		
+	  // Get all radio buttons with the name "options"
       var optionsRadioButtons = document.getElementsByName("AAoptions");
 
       // Find the selected radio button
@@ -744,10 +819,10 @@
         }
       }
 
-		    // Get all radio buttons with the name "play"
+	  // Get all radio buttons with the name "play"
       var playButtons = document.getElementsByName("play");
  
-       // Find the selected radio button
+      // Find the selected radio button
       var selectedPlay;
       for (var i = 0; i < playButtons.length; i++) {
         if (playButtons[i].checked) {
@@ -756,13 +831,10 @@
         }
       }
 
-
-		
-		
-	// Get all radio buttons with the name "AImode"
+	  // Get all radio buttons with the name "AImode"
       var AImodeButtons = document.getElementsByName("AImode");
  
-       // Find the selected radio button
+      // Find the selected radio button
       var selectedAIMode;
       for (var i = 0; i < AImodeButtons.length; i++) {
         if (AImodeButtons[i].checked) {
@@ -771,8 +843,7 @@
         }
       }
 
-
-      var url = 'https://home-b32.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=AutoSummary%5CASUMRTIG_ClickToCall&bus_no=4597359&scriptId=197668073&skill_no=4134464&p1=&p2=&p3=&p4=&p5=&Guid=2f080976-b3a3-48d6-8346-862727f0cdeb';
+      var url = 'https://home-b32.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=Traffic%20Generator%5CTG_Phone_VerticalCall_Customer&bus_no=4597359&scriptId=215964005&skill_no=4134464&Guid=2f080976-b3a3-48d6-8346-862727f0cdeb';
       url += '&p1=' + agentID;
 	  url += '&p2=' + selectedScenario+ '|' + selectedPlay+ '|' + selectedOption+ '|' + selectedAIMode;
 
@@ -837,44 +908,10 @@
         var agentVoiceValue = document.getElementById("agentVoice").value;
         var patronVoiceValue = document.getElementById("patronVoice").value;	
         
-        //Get CRM Values
-        var checkbox = document.getElementById("embeddedCrmAgent");
-        var crmDropdown = document.getElementById("crmDropdown");
-  
-         if (checkbox.checked) {
-        var selectedCrmValue = crmDropdown.value;
-        
-         // Get all radio buttons with the name "searchMethod"
-        var searchButtons = document.getElementsByName("searchMethod2");
-   
-         // Find the selected radio button
-        var selectedSearch;
-        for (var i = 0; i < searchButtons.length; i++) {
-          if (searchButtons[i].checked) {
-            selectedSearch = searchButtons[i].value;
-          }
-         //Get Email
-          var email = document.getElementById("email").value;
-          if (email === "") {
-          email = 'NA';
-          }
-        
-        //Get Caller ID
-        var callerID = document.getElementById("callerID").value;
-            if (isNumeric(callerID)) {
-          } else {
-              // The value is not numeric, set it to 'NA'
-              callerID = 'NA';
-          }
-          
-          
-        }
-          } else {
-          selectedCrmValue = 'NA';
-        }
-        
-        
-          //Get Custom Skill
+        //Get CRM value, if checked
+		let [selectedCrm2Value,searchField] = getCRM2();
+	     
+        //Get Custom Skill
         var customSkill = document.getElementById("customSkill").value;
        
             if (isNumeric(customSkill)) {
@@ -903,17 +940,15 @@
       }
   
         
-        var url = 'https://home-b32.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=ChimericalCorporation%5CExtension%5CASUMRTIG%5CASUMRTIG_ClickToCall&bus_no=4597359&scriptId=171373343&skill_no=4134464&Guid=2f080976-b3a3-48d6-8346-862727f0cdeb';
+        var url = 'https://home-b32.nice-incontact.com/inContact/Manage/Scripts/Spawn.aspx?scriptName=Traffic%20Generator%5CTG_Phone_CustomCall_Customer&bus_no=4597359&scriptId=215963976&skill_no=4134464&Guid=2f080976-b3a3-48d6-8346-862727f0cdeb';
         url += '&p1=CustomCall';
         url += '&p2=' + agentID;
-        url += '&p3=' + selectedCrmValue+ '|' + callerID+ '|' + email+ '|' + selectedSearch;
+        url += '&p3=' + selectedCrm2Value+ '|' + searchField;
         url += '&p4=' + selectedIndustry+ '|' + selectedAIMode;
         url += '&p5=' + customApp+ '|' + customRTIG;
         url += '&p6=' + agentVoiceValue + '|' + patronVoiceValue;
         url += '&p7=' + customSkill;
         
-  
-  
       //Build form 
               var myform = document.createElement("form");
               myform.action = url;
@@ -943,38 +978,40 @@
       
 		//Get CRM value and Search Field
 	   function getCRM2() {
+
+		  //Init and reset values
+		  var selectedCrm2Value = '';
+		  var searchField = '';
        
         //Get CRM2 Values
           var checkbox = document.getElementById("embeddedCrmAgent2");
-          var selectedCrm2Value;
 	   
        //If CRM is selected
        if (!checkbox.checked) {
            selectedCrm2Value = 'NA';
+		   searchField = '';
            } else {
               var crmDropdown2 = document.getElementById("crmDropdown2");
               selectedCrm2Value = crmDropdown2.value;
+			  searchField = document.getElementById('phoneEmail').value;
 	      }
 	 
-		  // Get all radio buttons with the name "searchMethod"
-        var searchButtons = document.getElementsByName("searchMethod");
+		  <!-- // Get all radio buttons with the name "searchMethod" -->
+        <!-- var searchButtons = document.getElementsByName("searchMethod"); -->
    
-         // Find the selected radio button
-        var selectedSearch;
-        for (var i = 0; i < searchButtons.length; i++) {
-          if (searchButtons[i].checked) {
-            selectedSearch = searchButtons[i].value;
-          }
-        }
+         <!-- // Find the selected radio button -->
+        <!-- var selectedSearch; -->
+        <!-- for (var i = 0; i < searchButtons.length; i++) { -->
+          <!-- if (searchButtons[i].checked) { -->
+            <!-- selectedSearch = searchButtons[i].value; -->
+          <!-- } -->
+        <!-- } -->
         
-          var callerID2 = document.getElementById('callerID2').value;
-          var email = document.getElementById('email').value;
-  
-        if (selectedSearch === 'email') {
-          searchField = email;
-        } else {
-          searchField = callerID2;
-        }
+        <!-- if (selectedSearch === 'email') { -->
+          <!-- searchField = email; -->
+        <!-- } else { -->
+          <!-- searchField = callerID2; -->
+        <!-- } -->
 		  return [selectedCrm2Value, searchField];
 		}
 	  
@@ -1151,27 +1188,27 @@
       }
   }
   
-      function toggleDropdownVisibility() {
-          var dropdownContainer = document.getElementById("crmDropdownContainer");
-          var checkbox = document.getElementById("embeddedCrmAgent");
+      <!-- function toggleDropdownVisibility() { -->
+          <!-- var dropdownContainer = document.getElementById("crmDropdownContainer"); -->
+          <!-- var checkbox = document.getElementById("embeddedCrmAgent"); -->
   
-          // Toggle the visibility of the dropdown container based on the checkbox state
-          dropdownContainer.style.display = checkbox.checked ? "inline" : "none";
-          CMRconfigcontainer2.style.display = checkbox.checked ? "inline" : "none";
+          <!-- // Toggle the visibility of the dropdown container based on the checkbox state -->
+          <!-- dropdownContainer.style.display = checkbox.checked ? "inline" : "none"; -->
+          <!-- CMRconfigcontainer2.style.display = checkbox.checked ? "inline" : "none"; -->
         
   
-        // Toggle the visibility of other elements based on the checkbox state
-        document.getElementById('callerID').style.display = checkbox.checked ? 'block' : 'none';
-        document.getElementById('email2').style.display = checkbox.checked ? 'block' : 'none';
-        document.getElementById('CRMconfig2').style.display = checkbox.checked ? 'block' : 'none';
+        <!-- // Toggle the visibility of other elements based on the checkbox state -->
+        <!-- document.getElementById('callerID').style.display = checkbox.checked ? 'block' : 'none'; -->
+        <!-- document.getElementById('email2').style.display = checkbox.checked ? 'block' : 'none'; -->
+        <!-- document.getElementById('CRMconfig2').style.display = checkbox.checked ? 'block' : 'none'; -->
   
-        // Clear the contents of callerID and email2 when checkbox is unchecked
-        if (!checkbox.checked) {
-          document.getElementById('callerID').value = '';
-          document.getElementById('email2').value = '';
-        }
+        <!-- // Clear the contents of callerID and email2 when checkbox is unchecked -->
+        <!-- if (!checkbox.checked) { -->
+          <!-- document.getElementById('callerID').value = ''; -->
+          <!-- document.getElementById('email2').value = ''; -->
+        <!-- } -->
         
-        }
+        <!-- } -->
         
       function toggleDropdownVisibility2() {
         var dropdownContainer = document.getElementById("crmDropdownContainer2");
@@ -1182,15 +1219,14 @@
         dropdownContainer.style.display = checkbox.checked ? "inline" : "none";
   
         // Toggle the visibility of other elements based on the checkbox state
-        document.getElementById('callerID2').style.display = checkbox.checked ? 'block' : 'none';
-        document.getElementById('email').style.display = checkbox.checked ? 'block' : 'none';
+        document.getElementById('phoneEmail').style.display = checkbox.checked ? 'block' : 'none';
+        <!-- document.getElementById('email').style.display = checkbox.checked ? 'block' : 'none'; -->
         document.getElementById('CRMconfig').style.display = checkbox.checked ? 'block' : 'none';
   
-        // Clear the contents of callerID2 and email when checkbox is unchecked
-        if (!checkbox.checked) {
-          document.getElementById('callerID2').value = '';
-          document.getElementById('email').value = '';
-        }
+        <!-- // Clear the contents of phoneEmail when checkbox is unchecked -->
+        <!-- if (!checkbox.checked) { -->
+          <!-- document.getElementById('phoneEmail').value = ''; -->
+        <!-- } -->
   
         // Optionally toggle the visibility of additional elements
         //var searchByContainer = document.getElementById("searchByContainer");
@@ -1230,33 +1266,31 @@
           }
   
       
-          var customSkill = document.getElementById('customSkill');
-          var customSkill2 = document.getElementById('customSkill2');
+          //var customSkill = document.getElementById('customSkill');
+   
+          <!-- email.addEventListener('input', function() { -->
+              <!-- syncFields(email, email2); -->
+          <!-- }); -->
+  
+          <!-- email2.addEventListener('input', function() { -->
+              <!-- syncFields(email2, email); -->
+          <!-- }); -->
           
+          <!-- callerID.addEventListener('input', function() { -->
+              <!-- syncFields(callerID, callerID2); -->
+          <!-- }); -->
   
-          email.addEventListener('input', function() {
-              syncFields(email, email2);
-          });
-  
-          email2.addEventListener('input', function() {
-              syncFields(email2, email);
-          });
+          <!-- callerID2.addEventListener('input', function() { -->
+              <!-- syncFields(callerID2, callerID); -->
+          <!-- }); -->
           
-          callerID.addEventListener('input', function() {
-              syncFields(callerID, callerID2);
-          });
+          <!-- customSkill.addEventListener('input', function() { -->
+              <!-- syncFields(customSkill, customSkill2); -->
+          <!-- }); -->
   
-          callerID2.addEventListener('input', function() {
-              syncFields(callerID2, callerID);
-          });
-          
-          customSkill.addEventListener('input', function() {
-              syncFields(customSkill, customSkill2);
-          });
-  
-          customSkill2.addEventListener('input', function() {
-              syncFields(customSkill2, customSkill);
-          });
+          <!-- customSkill2.addEventListener('input', function() { -->
+              <!-- syncFields(customSkill2, customSkill); -->
+          <!-- }); -->
           
                   
       toggleIndustryDropdown();
