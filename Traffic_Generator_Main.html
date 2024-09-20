@@ -612,7 +612,7 @@
       }
   
       function onEmailButtonClick() {
-        var email = "digitalfirstemail@gmail.com";
+        var email = "seek_tg_email-ef10eefe4597359@mail.nice-incontact.com";
         var agentID = localStorage.getItem('agentID');
 
         if (agentID .trim() === "") {
@@ -996,22 +996,6 @@
 			  searchField = document.getElementById('phoneEmail').value;
 	      }
 	 
-		  <!-- // Get all radio buttons with the name "searchMethod" -->
-        <!-- var searchButtons = document.getElementsByName("searchMethod"); -->
-   
-         <!-- // Find the selected radio button -->
-        <!-- var selectedSearch; -->
-        <!-- for (var i = 0; i < searchButtons.length; i++) { -->
-          <!-- if (searchButtons[i].checked) { -->
-            <!-- selectedSearch = searchButtons[i].value; -->
-          <!-- } -->
-        <!-- } -->
-        
-        <!-- if (selectedSearch === 'email') { -->
-          <!-- searchField = email; -->
-        <!-- } else { -->
-          <!-- searchField = callerID2; -->
-        <!-- } -->
 		  return [selectedCrm2Value, searchField];
 		}
 	  
@@ -1188,27 +1172,7 @@
       }
   }
   
-      <!-- function toggleDropdownVisibility() { -->
-          <!-- var dropdownContainer = document.getElementById("crmDropdownContainer"); -->
-          <!-- var checkbox = document.getElementById("embeddedCrmAgent"); -->
-  
-          <!-- // Toggle the visibility of the dropdown container based on the checkbox state -->
-          <!-- dropdownContainer.style.display = checkbox.checked ? "inline" : "none"; -->
-          <!-- CMRconfigcontainer2.style.display = checkbox.checked ? "inline" : "none"; -->
-        
-  
-        <!-- // Toggle the visibility of other elements based on the checkbox state -->
-        <!-- document.getElementById('callerID').style.display = checkbox.checked ? 'block' : 'none'; -->
-        <!-- document.getElementById('email2').style.display = checkbox.checked ? 'block' : 'none'; -->
-        <!-- document.getElementById('CRMconfig2').style.display = checkbox.checked ? 'block' : 'none'; -->
-  
-        <!-- // Clear the contents of callerID and email2 when checkbox is unchecked -->
-        <!-- if (!checkbox.checked) { -->
-          <!-- document.getElementById('callerID').value = ''; -->
-          <!-- document.getElementById('email2').value = ''; -->
-        <!-- } -->
-        
-        <!-- } -->
+
         
       function toggleDropdownVisibility2() {
         var dropdownContainer = document.getElementById("crmDropdownContainer2");
@@ -1266,32 +1230,7 @@
           }
   
       
-          //var customSkill = document.getElementById('customSkill');
-   
-          <!-- email.addEventListener('input', function() { -->
-              <!-- syncFields(email, email2); -->
-          <!-- }); -->
-  
-          <!-- email2.addEventListener('input', function() { -->
-              <!-- syncFields(email2, email); -->
-          <!-- }); -->
-          
-          <!-- callerID.addEventListener('input', function() { -->
-              <!-- syncFields(callerID, callerID2); -->
-          <!-- }); -->
-  
-          <!-- callerID2.addEventListener('input', function() { -->
-              <!-- syncFields(callerID2, callerID); -->
-          <!-- }); -->
-          
-          <!-- customSkill.addEventListener('input', function() { -->
-              <!-- syncFields(customSkill, customSkill2); -->
-          <!-- }); -->
-  
-          <!-- customSkill2.addEventListener('input', function() { -->
-              <!-- syncFields(customSkill2, customSkill); -->
-          <!-- }); -->
-          
+
                   
       toggleIndustryDropdown();
       
