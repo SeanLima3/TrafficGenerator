@@ -100,6 +100,7 @@
   
     </style>
   
+
   <form id="myForm" onsubmit="return onSubmitForm(event)">
   <p id="agentIDDisplay"></p><div class="button-container">
   <button id="clearLocalStorage" onclick="clearStorage()" type="button">Clear AgentID</button>
@@ -454,11 +455,22 @@
     </div>
     
     </font><br><br>
-          <label for="agentVoice">Agent Voice:</label>
-          <input type="text" id="agentVoice" name="agentVoice" value="en-US-Wavenet-C" />
-          <br><br>
-          <label for="patronVoice">Patron Voice:</label>
-          <input type="text" id="patronVoice" name="patronVoice"  value="en-US-Wavenet-D"/>
+	
+<label for="agentVoice">Agent Voice:</label>
+<input type="text" id="agentVoice" name="agentVoice" value="en-US-Chirp3-HD-Fenrir"/>
+<br><br>
+
+<label for="patronVoice">Patron Voice:</label>
+<input type="text" id="patronVoice" name="patronVoice" value="en-US-Chirp3-HD-Aoede"/>
+
+	
+	
+	
+          <!-- <label for="agentVoice">Agent Voice:</label> -->
+          <!-- <input type="text" id="agentVoice" name="agentVoice" value="en-US-Chirp3-HD-Fenrir" /> -->
+          <!-- <br><br> -->
+          <!-- <label for="patronVoice">Patron Voice:</label> -->
+          <!-- <input type="text" id="patronVoice" name="patronVoice"  value="en-US-Chirp3-HD-Aoede"/> -->
           <font size="2"><br><a id="clickHereLink" href="https://cloud.google.com/text-to-speech/docs/voices" target="_blank">Voice Options</a></font>
           <br><br>
   Agent Assist: 
@@ -476,7 +488,7 @@
       </div>
   </label>
   <label>
-      <input type="checkbox" id="autoSummaryCheckbox" name="AAoptions2" value="AutoSummary" checked onclick="toggleIndustryDropdown()"> AutoSummary
+      <input type="checkbox" id="autoSummaryCheckbox" name="AAoptions2" value="AutoSummary" onclick="toggleIndustryDropdown()"> AutoSummary
   </label>
   <br><br>
   <font size='2'>Note that CoPilot apps are not fully supported in the generator. Functionality is not guaranteed and you may need to setup CoPilot within your own inbound POC for it to work properly.</font>
@@ -533,6 +545,9 @@
    
    
   <script>
+  
+  
+  
   
       // JavaScript to toggle the visibility of the custom call DIV
     function toggleContentCustom() {
@@ -905,9 +920,15 @@
   
       
         //Get values of custom voices
+		
+		ensureVoiceDefaults(); // Ensure values are set
+
         var agentVoiceValue = document.getElementById("agentVoice").value;
         var patronVoiceValue = document.getElementById("patronVoice").value;	
-        
+		
+		localStorage.setItem('agentVoice', agentVoiceValue);
+		localStorage.setItem('patronVoice', patronVoiceValue);
+     
         //Get CRM value, if checked
 		let [selectedCrm2Value,searchField] = getCRM2();
 	     
@@ -995,7 +1016,7 @@
               selectedCrm2Value = crmDropdown2.value;
 			  searchField = document.getElementById('phoneEmail').value;
 	      }
-	 
+
 		  return [selectedCrm2Value, searchField];
 		}
 	  
@@ -1171,7 +1192,6 @@
           industryDropdown.value = ""; // Assuming the default value is an empty string
       }
   }
-  
 
         
       function toggleDropdownVisibility2() {
@@ -1228,10 +1248,7 @@
           function syncFields(source, target) {
               target.value = source.value;
           }
-  
-      
-
-                  
+                 
       toggleIndustryDropdown();
       
       });
@@ -1259,6 +1276,10 @@
           // Display AgentID on the webpage
           var agentIDDisplayElement = document.getElementById('agentIDDisplay');
           agentIDDisplayElement.textContent = "AgentID: " + agentID;
+		  
+		  //Get agent and patron languages
+		  var agentVoice = localStorage.getItem('agentVoice');
+		  var patronVoice = localStorage.getItem('patronVoice');  
       }
   
       // Call the function immediately after the script is encountered
@@ -1268,6 +1289,45 @@
           localStorage.clear();
           location.reload();
       }
+	  
+	  
+	  // Ensure default values are set before building the form
+		function ensureVoiceDefaults() {
+		const agentVoiceInput = document.getElementById("agentVoice");
+		const patronVoiceInput = document.getElementById("patronVoice");
+
+		if (!agentVoiceInput.value) {
+			agentVoiceInput.value = "en-US-Chirp3-HD-Fenrir"; // Default value
+			localStorage.setItem("agentVoice", agentVoiceInput.value);
+		} else {
+			localStorage.setItem("agentVoice", agentVoiceInput.value);
+		}
+
+		if (!patronVoiceInput.value) {
+			patronVoiceInput.value = "en-US-Chirp3-HD-Aoede"; // Default value
+			localStorage.setItem("patronVoice", patronVoiceInput.value);
+		} else {
+			localStorage.setItem("patronVoice", patronVoiceInput.value);
+		}
+	}
+		  
+
+  document.addEventListener("DOMContentLoaded", function () {
+    function setVoice(fieldId, storageKey) {
+      const inputField = document.getElementById(fieldId);
+      let storedValue = localStorage.getItem(storageKey);
+
+      if (!storedValue) {
+        storedValue = inputField.value; // Use the default value from the HTML
+        localStorage.setItem(storageKey, storedValue);
+      }
+
+      inputField.value = storedValue; // Ensure the field displays the correct value
+    }
+
+    setVoice("agentVoice", "agentVoice");
+    setVoice("patronVoice", "patronVoice");
+  });
   
   
     </script>
