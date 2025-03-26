@@ -111,6 +111,7 @@
       <input type="checkbox" id="embeddedCrmAgent2" onchange="toggleDropdownVisibility2()">
       <label for="embeddedCrmAgent2">CRM Agent <font size="2"></font></label>
     </div>
+
     <div id="crmDropdownContainer2">
       <label for="crmDropdown2" id="crmLabel2"></label>
       <select id="crmDropdown2" name="crmDropdown2">
@@ -144,6 +145,10 @@
     <div>
       <input type="checkbox" id="customizeCallCheckbox" onchange="toggleCustomFields()">
       <label for="customizeCallCheckbox">Customize Call</label>
+    </div>
+    <div>
+      <input type="checkbox" id="MAX_AutoSummary" onchange="toggleCustomFields()">
+      <label for="MAX_AutoSummary">MAX Autosummary (Not compatible with other customizations)</label>
     </div>
   <br><br>
     <div id="customFields" class="hidden">
@@ -797,7 +802,9 @@
         url += '&p3=CustomCRM' + '|' +selectedCrm2Value+ '|' + searchField;
         url += '&p4=' + selectedIndustry+ '|' + selectedAIMode;
         url += '&p5=' + customApp+ '|' + customRTIG;
-        
+        if (document.getElementById('MAX_AutoSummary').checked) {
+        url += '&p7=Yes';
+        }
        
        
           //Build form 
@@ -1204,13 +1211,13 @@
   
         // Toggle the visibility of other elements based on the checkbox state
         document.getElementById('phoneEmail').style.display = checkbox.checked ? 'block' : 'none';
-        <!-- document.getElementById('email').style.display = checkbox.checked ? 'block' : 'none'; -->
+        //<!-- document.getElementById('email').style.display = checkbox.checked ? 'block' : 'none'; -->
         document.getElementById('CRMconfig').style.display = checkbox.checked ? 'block' : 'none';
   
-        <!-- // Clear the contents of phoneEmail when checkbox is unchecked -->
-        <!-- if (!checkbox.checked) { -->
-          <!-- document.getElementById('phoneEmail').value = ''; -->
-        <!-- } -->
+        //<!-- // Clear the contents of phoneEmail when checkbox is unchecked -->
+        // <!-- if (!checkbox.checked) { -->
+        // <!-- document.getElementById('phoneEmail').value = ''; -->
+        //<!-- } -->
   
         // Optionally toggle the visibility of additional elements
         //var searchByContainer = document.getElementById("searchByContainer");
